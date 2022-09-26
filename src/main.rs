@@ -20,31 +20,45 @@ fn load_json() -> HolydayManager {
         .expect("Can't serialize to load_json")
 }
 
+fn save_json() {
+
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 struct HolydayManager {
     user: String,
-    normal_holyday: u8,
-    bank_holyday: u8,
+    normal_holyday: u32,
+    bank_holyday: u32,
+    default_normal_holyday: u32,
+    default_bank_holyday: u32,
 }
 
 impl HolydayManager {
-    fn remaining_days_to_string(self: &HolydayManager) -> String {
-        (self.normal_holyday + self.bank_holyday).to_string()
+    fn get_remaining_days(self: &HolydayManager) -> u32 {
+        self.normal_holyday + self.bank_holyday
     }
 
-    fn normal_days_to_string(self: &HolydayManager) -> String {
-        self.normal_holyday.to_string()
+    fn get_normal_days(self: &HolydayManager) -> u32 {
+        self.normal_holyday
     }
 
-    fn bank_days_to_string(self: &HolydayManager) -> String {
-        self.bank_holyday.to_string()
+    fn get_bank_days(self: &HolydayManager) -> u32 {
+        self.bank_holyday
     }
 
-    fn use_day() {
-
+    fn use_day(self: &mut HolydayManager) {
+        if self.normal_holyday != 0 {
+            self.normal_holyday -= 1;
+        }
+        else {
+            self.bank_holyday -= 1;
+        }
     }
 
-
+    fn reser_used_days(self: &mut HolydayManager) {
+        self.normal_holyday = self.default_normal_holyday;
+        self.bank_holyday = self.default_bank_holyday;
+    }
 }
 
 impl Default for HolydayManager {
@@ -58,7 +72,14 @@ impl eframe::App for HolydayManager {
 
         egui::CentralPanel::default().show(ctx, |ui| {
 
-            ui.heading("Cool");
+            ui.horizontal(|ui| {
+                ui.heading("Cool");
+         
+                if ui.button("Reset").clicked() {
+                    // mettre une popup
+                    self.reser_used_days();
+                }
+            });
 
             ui.separator();
 
@@ -72,29 +93,36 @@ impl eframe::App for HolydayManager {
                 ui.end_row();
 
                 ui.label("Days remaining:");
-                ui.label(self.remaining_days_to_string());
+                ui.label(self.get_remaining_days().to_string());
                 ui.end_row();
 
                 ui.label("Normal days remaining:");
-                ui.label(self.normal_days_to_string());
+                ui.label(self.get_normal_days().to_string());
                 ui.end_row();
 
                 ui.label("Bank days remaining:");
-                ui.label(self.bank_days_to_string());
+                ui.label(self.get_bank_days().to_string());
                 ui.end_row();
 
                 ui.label("Remove days:");
                 ui.horizontal(|ui| {
-                    // let mut days: i32 = 0;
-                    // ui.add(egui::DragValue::new(days).speed(1.0));
-                    if ui.button("Remove").clicked() {
-                        println!("lol");
+                    let mut can_reduce_day: bool = true;
+                    if self.get_remaining_days() == 0 {
+                        can_reduce_day = false;
                     }
+
+                    ui.add_enabled_ui(can_reduce_day, |ui| {
+                        if ui.button("Remove").clicked() {
+                            self.use_day();
+                        }
+                    });
                 });
                 ui.end_row();
 
                 ui.collapsing("More options", |ui| {
-                    // ui.horizontal()
+                    ui.horizontal(|ui| {
+
+                    });
                 });
             });
         });

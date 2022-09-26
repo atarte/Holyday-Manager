@@ -1,5 +1,7 @@
 {
   "user": "test",
   "normal_holyday": 22,
-  "bank_holyday": 9
+  "bank_holyday": 9,
+  "default_normal_holyday": 22,
+  "default_bank_holyday": 9
 }
