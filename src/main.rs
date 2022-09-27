@@ -12,7 +12,7 @@ fn main() {
     );
 }
 
-fn create_json() {
+fn init_json() {
     
 }
 
@@ -89,11 +89,23 @@ impl eframe::App for HolydayManager {
 
             ui.horizontal(|ui| {
                 ui.heading("Cool");
-         
-                if ui.button("Reset").clicked() {
-                    // mettre une popup
-                    self.reser_used_days();
+      
+                let popup_id = ui.make_persistent_id("my_unique_id");
+                
+                let reset = ui.button("reset");
+                if reset.clicked() {
+                    ui.memory().toggle_popup(popup_id);
                 }
+
+                // if ui.button("Reset").clicked() {
+                //     ui.memory().toggle_popup(popup_id);
+                //
+                //     // self.reser_used_days();
+                // }
+                egui::popup::popup_below_widget(ui, popup_id, &reset, |ui| {
+                    ui.label("Some more info, or things you can select:");
+                    ui.label("…");
+                });
             });
 
             ui.separator();
