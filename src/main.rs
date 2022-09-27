@@ -12,6 +12,10 @@ fn main() {
     );
 }
 
+fn create_json() {
+    
+}
+
 fn load_json() -> HolydayManager {
     let file_str: String = fs::read_to_string("./data.json")
         .expect("The file is not here so fuck it");
@@ -25,10 +29,10 @@ fn save_json(holyday: &HolydayManager) {
         .write(true)    
         .append(false)
         .open("./data.json")
-        .expect("cqsser");
+        .expect("Can't open ths data file");
 
     serde_json::to_writer_pretty(&file, holyday)
-        .expect("ooooo")
+        .expect("Can't write in the data file")
 }
 
 #[derive(Debug, Serialize, Deserialize)]
