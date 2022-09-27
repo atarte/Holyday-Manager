@@ -1,13 +1,18 @@
-use eframe::egui;
+use eframe::{egui, epaint::Vec2};
 use serde_derive::{Serialize, Deserialize};
 use std::fs;
 
+const WINDOW_WIDTH: f32 = 400.0;
+const WINDOW_HEIGHT: f32 = 200.0;
+
 fn main() {
-    let option = eframe::NativeOptions::default();
+    let mut options = eframe::NativeOptions::default();
+    // options.initial_window_size = Option::from(Vec2::new(WINDOW_WIDTH,e WINDOW_HEIGHT)); 
+    // options.resizable = false;
 
     eframe::run_native(
         "Joao Awesome Holyday Manager", 
-        option, 
+        options, 
         Box::new(|_cc| Box::new(HolydayManager::default())),
     );
 }
@@ -68,7 +73,7 @@ impl HolydayManager {
         save_json(self);
     }
 
-    fn reser_used_days(self: &mut HolydayManager) {
+    fn reset_used_days(self: &mut HolydayManager) {
         self.normal_holyday = self.default_normal_holyday;
         self.bank_holyday = self.default_bank_holyday;
 
@@ -85,11 +90,15 @@ impl Default for HolydayManager {
 impl eframe::App for HolydayManager {
     fn update(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
 
+            // println!("{:?}", ctx.used_size());
+            // let col_width = ctx.used_size()[0];
+            // println!("{}", col_width);
+
         egui::CentralPanel::default().show(ctx, |ui| {
 
             ui.horizontal(|ui| {
                 ui.heading("Cool");
-      
+                 
                 let popup_id = ui.make_persistent_id("my_unique_id");
                 
                 let reset = ui.button("reset");
@@ -112,7 +121,8 @@ impl eframe::App for HolydayManager {
 
             egui::Grid::new("DayGrid")
                 .striped(true)
-                // .min_col_width
+                .min_col_width(col_width)
+                .max_col_width(col_width)
                 .show(ui, |ui| {
 
                 ui.label("User:");
