@@ -20,8 +20,15 @@ fn load_json() -> HolydayManager {
         .expect("Can't serialize to load_json")
 }
 
-fn save_json() {
+fn save_json(holyday: &HolydayManager) {
+    let file = fs::OpenOptions::new()
+        .write(true)    
+        .append(false)
+        .open("./data.json")
+        .expect("cqsser");
 
+    serde_json::to_writer_pretty(&file, holyday)
+        .expect("ooooo")
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -53,11 +60,15 @@ impl HolydayManager {
         else {
             self.bank_holyday -= 1;
         }
+
+        save_json(self);
     }
 
     fn reser_used_days(self: &mut HolydayManager) {
         self.normal_holyday = self.default_normal_holyday;
         self.bank_holyday = self.default_bank_holyday;
+
+        save_json(self);
     }
 }
 
