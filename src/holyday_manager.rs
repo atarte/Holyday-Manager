@@ -95,11 +95,8 @@ impl HolydayManager {
     }
 
     pub fn save_json(self: &HolydayManager) {
-        let file = fs::OpenOptions::new()
-            .write(true)    
-            .append(false)
-            .open("./data.json")
-            .expect("Can't open ths data file");
+        let file: File = File::create("./data.json")
+            .expect("Can't open the data file");
 
         serde_json::to_writer_pretty(&file, self)
             .expect("Can't write in the data file")
