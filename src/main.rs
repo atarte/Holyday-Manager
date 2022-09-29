@@ -1,3 +1,5 @@
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+
 use eframe::{egui, epaint::Vec2};
 
 mod holyday_manager;
