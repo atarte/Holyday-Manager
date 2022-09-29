@@ -1,7 +1,6 @@
-
 use serde_derive::{Serialize, Deserialize};
 
-use std::fs;
+use std::{fs::{self, File}, path::Path};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct HolydayManager {
@@ -14,6 +13,21 @@ pub struct HolydayManager {
 
 impl HolydayManager {
     pub fn new() -> Self {
+        if !Path::new("./data.json").exists() {
+            File::create("./data.json")
+                .expect("Can't init file");
+
+            let new_data: HolydayManager = HolydayManager{
+                user: "new_user".to_owned(),
+                normal_holyday: 22,
+                bank_holyday: 9,
+                default_normal_holyday: 22,
+                default_bank_holyday: 9,
+            };
+
+            new_data.save_json();
+        }
+
         let file_str: String = fs::read_to_string("./data.json")
             .expect("The file is not here so fuck it");
 
