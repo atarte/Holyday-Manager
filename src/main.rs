@@ -6,8 +6,11 @@ const WINDOW_WIDTH: f32 = 400.0;
 const WINDOW_HEIGHT: f32 = 200.0;
 
 fn main() {
-    let mut options = eframe::NativeOptions::default();
-    options.initial_window_size = Option::from(Vec2::new(WINDOW_WIDTH, WINDOW_HEIGHT)); 
+    let options = eframe::NativeOptions{
+        initial_window_size: Option::from(Vec2::new(WINDOW_WIDTH, WINDOW_HEIGHT)),
+        min_window_size: Option::from(Vec2::new(WINDOW_WIDTH, WINDOW_HEIGHT)),
+        ..Default::default()
+    };
 
     eframe::run_native(
         "Joao Awesome Holyday Manager", 
