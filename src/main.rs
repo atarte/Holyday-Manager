@@ -9,6 +9,7 @@ fn main() {
     let options = eframe::NativeOptions{
         initial_window_size: Option::from(Vec2::new(WINDOW_WIDTH, WINDOW_HEIGHT)),
         min_window_size: Option::from(Vec2::new(WINDOW_WIDTH, WINDOW_HEIGHT)),
+        icon_data: Some(load_icon("./icon.png")),
         ..Default::default()
     };
 
@@ -17,6 +18,23 @@ fn main() {
         options, 
         Box::new(|_cc| Box::new(AppData::default())),
     );
+}
+
+fn load_icon(path: &str) -> eframe::IconData {
+    let (icon_rgba, icon_width, icon_height) = {
+        let image = image::open(path)
+            .expect("Failed to open icon path")
+            .into_rgba8();
+        let (width, height) = image.dimensions();
+        let rgba = image.into_raw();
+        (rgba, width, height)
+    };
+
+    eframe::IconData {
+        rgba: icon_rgba,
+        width: icon_width,
+        height: icon_height,
+    }
 }
 
 struct AppData {
