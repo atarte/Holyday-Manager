@@ -1,6 +1,6 @@
 # Holyday-Manager
 
-![app interface](https://github.com/atarte/Holyday-Manager/tree/main/doc)
+![app interface](https://github.com/atarte/Holyday-Manager/tree/main/doc/App-screen.png)
 
 ## Description
 
