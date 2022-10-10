@@ -82,7 +82,7 @@ impl HolydayManager {
     }
 
     pub fn add_bank_days(self: &mut HolydayManager, nb_days: u32) {
-        self.normal_holyday += nb_days;
+        self.bank_holyday += nb_days;
 
         self.save_json();
     }
